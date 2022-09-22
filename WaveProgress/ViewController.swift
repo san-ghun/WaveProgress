@@ -12,6 +12,9 @@ let screenWidth = UIScreen.main.bounds.size.width
 class ViewController: UIViewController {
     
     let waterWaveView = WaterWaveView()
+    
+    let dr: TimeInterval = 10.0
+    var timer: Timer?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,5 +33,24 @@ class ViewController: UIViewController {
         ])
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+//        timer = Timer.scheduledTimer(withTimeInterval: 0.01, repeats: true, block: { _ in
+//            let dr = CGFloat(1.0 / (self.dr / 0.01))
+//            
+//            self.waterWaveView.progress += dr
+//            self.waterWaveView.setupProgress(self.waterWaveView.progress)
+//            
+//            if self.waterWaveView.progress >= 0.95 {
+//                self.timer?.invalidate()
+//                self.timer = nil
+//                
+//                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+//                    self.waterWaveView.percentAnim()
+//                }
+//            }
+//        })
+    }
 }
 
