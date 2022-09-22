@@ -48,7 +48,7 @@ class WaterWaveView: UIView {
     func setupViews() {
         bounds = CGRect(x: 0.0, y: 0.0, width: min(width, width), height: min(width, width))
         clipsToBounds = true
-        backgroundColor = .cyan
+        backgroundColor = .clear
         translatesAutoresizingMaskIntoConstraints = false
         
         layer.masksToBounds = true
@@ -79,5 +79,53 @@ class WaterWaveView: UIView {
         secondLayer.anchorPoint = .zero
         secondLayer.fillColor = secondColor.cgColor
         layer.addSublayer(secondLayer)
+    }
+    
+    func setupProgress(_ pr: CGFloat) {
+        progress = pr
+        
+        let top: CGFloat = 1 * bounds.size.height / 2
+//        let top: CGFloat = pr * bounds.size.height
+        firstLayer.setValue(width - top, forKeyPath: "position.y")
+        secondLayer.setValue(width - top, forKeyPath: "position.y")
+        
+        if !start {
+            DispatchQueue.main.async {
+                self.startAnim()
+            }
+        }
+    }
+    
+    private func startAnim() {
+        start = true
+        waterWaveAnim()
+    }
+    
+    private func waterWaveAnim() {
+        let w = bounds.size.width
+        let h = bounds.size.height
+        
+        let bezier = UIBezierPath()
+        let path = CGMutablePath()
+        
+        let startOffsetY = waveHeight * CGFloat(sinf(Float(offset * twoPi * w)))
+        var originOffsetY: CGFloat = 0.0
+        
+        path.move(to: CGPoint(x: 0.0, y: startOffsetY), transform: .identity)
+        bezier.move(to: CGPoint(x: 0.0, y: startOffsetY))
+        
+        for i in stride(from: 0.0, to: w * 1000, by: 1) {
+            originOffsetY = waveHeight * CGFloat(sinf(Float(twoPi / w * i + offset * twoPi / w)))
+            bezier.addLine(to: CGPoint(x: i, y: originOffsetY))
+        }
+        
+        bezier.addLine(to: CGPoint(x: w * 1000, y: originOffsetY))
+        bezier.addLine(to: CGPoint(x: w * 1000, y: h))
+        bezier.addLine(to: CGPoint(x: 0.0, y: h))
+        bezier.addLine(to: CGPoint(x: 0.0, y: originOffsetY))
+        bezier.close()
+        
+        firstLayer.fillColor = firstColor.cgColor
+        firstLayer.path = bezier.cgPath
     }
 }
