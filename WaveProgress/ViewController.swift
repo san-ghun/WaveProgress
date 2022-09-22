@@ -7,23 +7,23 @@
 
 import UIKit
 
+let screenWidth = UIScreen.main.bounds.size.width
+
 class ViewController: UIViewController {
     
-    let waterWaveView = UIView()
+    let waterWaveView = WaterWaveView()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         
-        waterWaveView.clipsToBounds = true
-        waterWaveView.backgroundColor = .cyan
+//        let scWidth = view.window?.windowScene?.screen.bounds.size.width
         
         view.addSubview(waterWaveView)
-        waterWaveView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
             waterWaveView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.5),
-            waterWaveView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.5),
+            waterWaveView.heightAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.5),
             waterWaveView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             waterWaveView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         ])
